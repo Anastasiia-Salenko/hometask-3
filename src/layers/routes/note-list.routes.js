@@ -6,5 +6,12 @@ export const router = express.Router();
 router.get("/", (req, res) => {
   const notes = noteListService.getList();
 
-  res.send(JSON.stringify(notes, null, 2));
+  res.send(notes);
+});
+
+router.post("/", (req, res) => {
+  const { content, category } = req.body;
+  const note = noteListService.create({ content, category });
+
+  res.send(note);
 });
