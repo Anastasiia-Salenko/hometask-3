@@ -18,4 +18,7 @@ export const notesStorage = {
 
     return note;
   },
+  get: (id) => {
+    return notes.find((item) => item.id === id);
+  },
 };
