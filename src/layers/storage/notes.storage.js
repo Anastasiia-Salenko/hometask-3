@@ -21,4 +21,9 @@ export const notesStorage = {
   get: (id) => {
     return notes.find((item) => item.id === id);
   },
+  delete: (id) => {
+    const index = notes.findIndex((item) => item.id === id);
+
+    notes.splice(index, 1);
+  },
 };

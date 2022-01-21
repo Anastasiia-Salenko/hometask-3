@@ -9,3 +9,10 @@ router.get("/:id", (req, res) => {
 
   res.send(note);
 });
+
+router.delete("/:id", (req, res) => {
+  const { id } = req.params;
+  noteItemService.delete(id);
+
+  res.sendStatus(204);
+});
