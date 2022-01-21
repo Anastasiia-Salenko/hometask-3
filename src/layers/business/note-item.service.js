@@ -7,4 +7,7 @@ export const noteItemService = {
   delete: (id) => {
     notesStorage.delete(id);
   },
+  update: (id, { content, category }) => {
+    return notesStorage.update(id, { content, category });
+  },
 };

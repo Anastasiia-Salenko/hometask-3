@@ -16,3 +16,12 @@ router.delete("/:id", (req, res) => {
 
   res.sendStatus(204);
 });
+
+router.patch("/:id", (req, res) => {
+  const { id } = req.params;
+  const { content, category } = req.body;
+
+  const note = noteItemService.update(id, { content, category });
+
+  res.send(note);
+});

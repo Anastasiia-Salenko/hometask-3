@@ -26,4 +26,12 @@ export const notesStorage = {
 
     notes.splice(index, 1);
   },
+  update: (id, { content, category }) => {
+    const index = notes.findIndex((item) => item.id === id);
+
+    notes[index].content = content;
+    notes[index].category = category;
+
+    return notes[index];
+  },
 };
