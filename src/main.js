@@ -1,7 +1,6 @@
-import { secondary } from "./secondary.js";
+import { app } from "./app.js";
+const port = 8080;
 
-function main() {
-  secondary();
-}
-
-main();
+app.listen(port, () => {
+  console.log(`app listening on port ${port}`);
+});
