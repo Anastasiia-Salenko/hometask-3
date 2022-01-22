@@ -1,9 +1,23 @@
 import express from "express";
 import Joi from "joi";
+import { ERROR_TYPE } from "../../common/constants.js";
 import { noteItemService } from "../business/note-item.service.js";
 import { EditNoteInputSchema } from "../models/edit-note-input.schema.js";
 
 export const router = express.Router();
+
+const validateNoteExists = (req, res, next) => {
+  const note = noteItemService.get(req.params.id);
+
+  if (!note) {
+    const error = new Error(`Note not found (id = ${req.params.id})`);
+    error.name = ERROR_TYPE.NOT_FOUND_ERROR;
+
+    throw error;
+  }
+
+  next();
+};
 
 /**
  * @openapi
@@ -21,8 +35,10 @@ export const router = express.Router();
  *    responses:
  *      200:
  *        description: Successful response
+ *      404:
+ *        description: Not found response
  */
-router.get("/:id", (req, res) => {
+router.get("/:id", validateNoteExists, (req, res) => {
   const { id } = req.params;
   const note = noteItemService.get(id);
 
@@ -51,8 +67,10 @@ router.get("/:id", (req, res) => {
  *    responses:
  *      200:
  *        description: Successful response
+ *      404:
+ *        description: Not found response
  */
-router.patch("/:id", (req, res) => {
+router.patch("/:id", validateNoteExists, (req, res) => {
   Joi.attempt(req.body, EditNoteInputSchema, {
     abortEarly: false,
   });
@@ -81,8 +99,10 @@ router.patch("/:id", (req, res) => {
  *    responses:
  *      204:
  *        description: Successful response
+ *      404:
+ *        description: Not found response
  */
-router.delete("/:id", (req, res) => {
+router.delete("/:id", validateNoteExists, (req, res) => {
   const { id } = req.params;
   noteItemService.delete(id);
 
@@ -105,8 +125,10 @@ router.delete("/:id", (req, res) => {
  *    responses:
  *      200:
  *        description: Successful response
+ *      404:
+ *        description: Not found response
  */
-router.post("/:id/archive", (req, res) => {
+router.post("/:id/archive", validateNoteExists, (req, res) => {
   const { id } = req.params;
 
   const note = noteItemService.archive(id);
@@ -130,8 +152,10 @@ router.post("/:id/archive", (req, res) => {
  *    responses:
  *      200:
  *        description: Successful response
+ *      404:
+ *        description: Not found response
  */
-router.post("/:id/unarchive", (req, res) => {
+router.post("/:id/unarchive", validateNoteExists, (req, res) => {
   const { id } = req.params;
 
   const note = noteItemService.unarchive(id);
