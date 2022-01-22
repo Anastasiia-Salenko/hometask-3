@@ -1,19 +1,24 @@
 import { v4 as uuidv4 } from "uuid";
 import { prepopulatedNotes } from "./prepopulated-notes.js";
+import { extractDatesFromContent } from "../../utils/extractDatesFromContent.js";
 
-const notes = [...prepopulatedNotes];
+const notes = prepopulatedNotes.map((item) => ({
+  ...item,
+  dates: extractDatesFromContent(item.content),
+}));
 
 export const notesStorage = {
   getList: () => {
     return notes;
   },
-  create: ({ content, category }) => {
+  create: ({ content, category, dates }) => {
     const note = {
       content: content,
       category: category,
       id: uuidv4(),
-      created: new Date(),
+      created: formatDate(new Date()),
       isArchived: false,
+      dates: dates,
     };
     notes.push(note);
 
@@ -27,7 +32,7 @@ export const notesStorage = {
 
     notes.splice(index, 1);
   },
-  update: (id, { content, category, isArchived }) => {
+  update: (id, { content, category, isArchived, dates }) => {
     const index = notes.findIndex((item) => item.id === id);
 
     if (content) {
@@ -40,6 +45,10 @@ export const notesStorage = {
 
     if (typeof isArchived === "boolean") {
       notes[index].isArchived = isArchived;
+    }
+
+    if (dates) {
+      notes[index].dates = dates;
     }
 
     return notes[index];

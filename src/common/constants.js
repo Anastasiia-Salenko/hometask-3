@@ -8,3 +8,5 @@ export const ERROR_TYPE = {
   VALIDATION_ERROR: "ValidationError",
   SERVER_ERROR: "ServerError",
 };
+
+export const DATE_FORMAT = "dd/MM/yyyy";
