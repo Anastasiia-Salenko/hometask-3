@@ -14,7 +14,10 @@
     "date-fns": "^2.28.0",
     "express": "^4.17.2",
     "joi": "^17.5.0",
+    "joi-to-swagger": "^6.0.1",
     "nodemon": "^2.0.15",
+    "swagger-jsdoc": "^6.1.0",
+    "swagger-ui-express": "^4.3.0",
     "uuid": "^8.3.2"
   }
 }

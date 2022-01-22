@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import { prepopulatedNotes } from "./prepopulated-notes.js";
 import { extractDatesFromContent } from "../../utils/extractDatesFromContent.js";
+import { formatDate } from "../../utils/formatDate.js";
 
 const notes = prepopulatedNotes.map((item) => ({
   ...item,

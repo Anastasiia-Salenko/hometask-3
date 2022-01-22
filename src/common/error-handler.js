@@ -11,8 +11,9 @@ export const errorHandler = (err, req, res, next) => {
         },
       });
     } else {
-      err.status(500);
-      err.send({
+      console.error(err);
+      res.status(500);
+      res.send({
         error: {
           type: ERROR_TYPE.SERVER_ERROR,
         },

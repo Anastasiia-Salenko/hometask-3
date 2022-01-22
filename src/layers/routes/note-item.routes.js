@@ -1,10 +1,27 @@
 import express from "express";
 import Joi from "joi";
-import { NOTE_CATEGORIES } from "../../common/constants.js";
 import { noteItemService } from "../business/note-item.service.js";
+import { EditNoteInputSchema } from "../models/edit-note-input.schema.js";
 
 export const router = express.Router();
 
+/**
+ * @openapi
+ * /notes/{id}:
+ *  get:
+ *    summary: Returns a note by id
+ *    tags:
+ *      - Note item operations
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: string
+ *          format: uuid
+ *    responses:
+ *      200:
+ *        description: Successful response
+ */
 router.get("/:id", (req, res) => {
   const { id } = req.params;
   const note = noteItemService.get(id);
@@ -12,19 +29,31 @@ router.get("/:id", (req, res) => {
   res.send(note);
 });
 
-router.delete("/:id", (req, res) => {
-  const { id } = req.params;
-  noteItemService.delete(id);
-
-  res.sendStatus(204);
-});
-
+/**
+ * @openapi
+ * /notes/{id}:
+ *  patch:
+ *    summary: Edit a note by id
+ *    tags:
+ *      - Note item operations
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/definitions/EditNoteInput'
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: string
+ *          format: uuid
+ *    responses:
+ *      200:
+ *        description: Successful response
+ */
 router.patch("/:id", (req, res) => {
-  const schema = Joi.object({
-    content: Joi.string().min(1),
-    category: Joi.string().valid(...Object.values(NOTE_CATEGORIES)),
-  }).min(1);
-  Joi.attempt(req.body, schema, {
+  Joi.attempt(req.body, EditNoteInputSchema, {
     abortEarly: false,
   });
 
@@ -36,6 +65,47 @@ router.patch("/:id", (req, res) => {
   res.send(note);
 });
 
+/**
+ * @openapi
+ * /notes/{id}:
+ *  delete:
+ *    summary: Remove a note by id
+ *    tags:
+ *      - Note item operations
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: string
+ *          format: uuid
+ *    responses:
+ *      204:
+ *        description: Successful response
+ */
+router.delete("/:id", (req, res) => {
+  const { id } = req.params;
+  noteItemService.delete(id);
+
+  res.sendStatus(204);
+});
+
+/**
+ * @openapi
+ * /notes/{id}/archive:
+ *  post:
+ *    summary: Archive a note by id
+ *    tags:
+ *      - Note item operations
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: string
+ *          format: uuid
+ *    responses:
+ *      200:
+ *        description: Successful response
+ */
 router.post("/:id/archive", (req, res) => {
   const { id } = req.params;
 
@@ -44,6 +114,23 @@ router.post("/:id/archive", (req, res) => {
   res.send(note);
 });
 
+/**
+ * @openapi
+ * /notes/{id}/unarchive:
+ *  post:
+ *    summary: Unarchive a note by id
+ *    tags:
+ *      - Note item operations
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: string
+ *          format: uuid
+ *    responses:
+ *      200:
+ *        description: Successful response
+ */
 router.post("/:id/unarchive", (req, res) => {
   const { id } = req.params;
 
