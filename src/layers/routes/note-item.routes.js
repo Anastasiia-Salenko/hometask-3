@@ -25,3 +25,19 @@ router.patch("/:id", (req, res) => {
 
   res.send(note);
 });
+
+router.post("/:id/archive", (req, res) => {
+  const { id } = req.params;
+
+  const note = noteItemService.archive(id);
+
+  res.send(note);
+});
+
+router.post("/:id/unarchive", (req, res) => {
+  const { id } = req.params;
+
+  const note = noteItemService.unarchive(id);
+
+  res.send(note);
+});

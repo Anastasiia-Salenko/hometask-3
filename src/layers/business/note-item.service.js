@@ -10,4 +10,10 @@ export const noteItemService = {
   update: (id, { content, category }) => {
     return notesStorage.update(id, { content, category });
   },
+  archive: (id) => {
+    return notesStorage.update(id, { isArchived: true });
+  },
+  unarchive: (id) => {
+    return notesStorage.update(id, { isArchived: false });
+  },
 };

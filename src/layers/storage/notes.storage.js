@@ -13,6 +13,7 @@ export const notesStorage = {
       category: category,
       id: uuidv4(),
       created: new Date(),
+      isArchived: false,
     };
     notes.push(note);
 
@@ -26,11 +27,20 @@ export const notesStorage = {
 
     notes.splice(index, 1);
   },
-  update: (id, { content, category }) => {
+  update: (id, { content, category, isArchived }) => {
     const index = notes.findIndex((item) => item.id === id);
 
-    notes[index].content = content;
-    notes[index].category = category;
+    if (content) {
+      notes[index].content = content;
+    }
+
+    if (category) {
+      notes[index].category = category;
+    }
+
+    if (typeof isArchived === "boolean") {
+      notes[index].isArchived = isArchived;
+    }
 
     return notes[index];
   },
