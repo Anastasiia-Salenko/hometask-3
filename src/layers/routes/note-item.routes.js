@@ -38,7 +38,7 @@ const validateNoteExists = (req, res, next) => {
  *      404:
  *        description: Not found response
  */
-router.get("/:id", validateNoteExists, (req, res) => {
+router.get("/notes/:id", validateNoteExists, (req, res) => {
   const { id } = req.params;
   const note = noteItemService.get(id);
 
@@ -70,7 +70,7 @@ router.get("/:id", validateNoteExists, (req, res) => {
  *      404:
  *        description: Not found response
  */
-router.patch("/:id", validateNoteExists, (req, res) => {
+router.patch("/notes/:id", validateNoteExists, (req, res) => {
   Joi.attempt(req.body, EditNoteInputSchema, {
     abortEarly: false,
   });
@@ -102,7 +102,7 @@ router.patch("/:id", validateNoteExists, (req, res) => {
  *      404:
  *        description: Not found response
  */
-router.delete("/:id", validateNoteExists, (req, res) => {
+router.delete("/notes/:id", validateNoteExists, (req, res) => {
   const { id } = req.params;
   noteItemService.delete(id);
 
@@ -128,7 +128,7 @@ router.delete("/:id", validateNoteExists, (req, res) => {
  *      404:
  *        description: Not found response
  */
-router.post("/:id/archive", validateNoteExists, (req, res) => {
+router.post("/notes/:id/archive", validateNoteExists, (req, res) => {
   const { id } = req.params;
 
   const note = noteItemService.archive(id);
@@ -155,7 +155,7 @@ router.post("/:id/archive", validateNoteExists, (req, res) => {
  *      404:
  *        description: Not found response
  */
-router.post("/:id/unarchive", validateNoteExists, (req, res) => {
+router.post("/notes/:id/unarchive", validateNoteExists, (req, res) => {
   const { id } = req.params;
 
   const note = noteItemService.unarchive(id);

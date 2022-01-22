@@ -24,6 +24,9 @@ apiSpecification.tags = [
   {
     name: "Note item operations",
   },
+  {
+    name: "Note statistics",
+  },
 ];
 
 apiSpecification.definitions = {

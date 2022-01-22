@@ -23,7 +23,7 @@ export const router = express.Router();
  *      200:
  *        description: Successful response
  */
-router.get("/", (req, res) => {
+router.get("/notes", (req, res) => {
   Joi.attempt(req.query, FilterNotesQuerySchema, { abortEarly: false });
   const notes = noteListService.getList({
     isArchived:
@@ -52,7 +52,7 @@ router.get("/", (req, res) => {
  *      201:
  *        description: Successful response
  */
-router.post("/", (req, res) => {
+router.post("/notes", (req, res) => {
   Joi.attempt(req.body, CreateNoteInputSchema, {
     abortEarly: false,
   });
