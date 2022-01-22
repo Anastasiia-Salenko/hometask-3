@@ -2,6 +2,7 @@ import express from "express";
 import Joi from "joi";
 import { noteListService } from "../business/note-list.service.js";
 import { CreateNoteInputSchema } from "../models/create-note-input.schema.js";
+import { FilterNotesQuerySchema } from "../models/filter-notes-query.schema.js";
 
 export const router = express.Router();
 
@@ -12,12 +13,24 @@ export const router = express.Router();
  *    summary: Returns a list of notes
  *    tags:
  *      - Note list operations
+ *    parameters:
+ *      - in: query
+ *        name: isArchived
+ *        schema:
+ *          type: string
+ *          enum: [true, false]
  *    responses:
  *      200:
  *        description: Successful response
  */
 router.get("/", (req, res) => {
-  const notes = noteListService.getList();
+  Joi.attempt(req.query, FilterNotesQuerySchema, { abortEarly: false });
+  const notes = noteListService.getList({
+    isArchived:
+      typeof req.query.isArchived === "string"
+        ? req.query.isArchived === "true"
+        : undefined,
+  });
 
   res.send(notes);
 });
