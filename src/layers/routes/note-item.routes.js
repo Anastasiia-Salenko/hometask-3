@@ -1,4 +1,6 @@
 import express from "express";
+import Joi from "joi";
+import { NOTE_CATEGORIES } from "../../common/constants.js";
 import { noteItemService } from "../business/note-item.service.js";
 
 export const router = express.Router();
@@ -18,6 +20,14 @@ router.delete("/:id", (req, res) => {
 });
 
 router.patch("/:id", (req, res) => {
+  const schema = Joi.object({
+    content: Joi.string().min(1),
+    category: Joi.string().valid(...Object.values(NOTE_CATEGORIES)),
+  }).min(1);
+  Joi.attempt(req.body, schema, {
+    abortEarly: false,
+  });
+
   const { id } = req.params;
   const { content, category } = req.body;
 
