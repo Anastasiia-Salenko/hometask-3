@@ -11,13 +11,13 @@ export const errorHandler = (err, req, res, next) => {
         },
       });
     } else {
-      console.error(err);
       res.status(500);
       res.send({
         error: {
           type: ERROR_TYPE.SERVER_ERROR,
         },
       });
+      return next(err);
     }
   }
 
